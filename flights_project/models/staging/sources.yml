@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw_data
+    database: Flights_DW
+    schema: stg
+    tables:
+      - name: Raw_Flights
+      - name: Raw_Airports
+      - name: Raw_Aircraft_FAA
+      - name: Raw_Aircraft_DB

@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: dim_airport
+    columns:
+      - name: Airport_SK
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_airline
+    columns:
+      - name: Airline_SK
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_aircraft
+    columns:
+      - name: Aircraft_SK
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_time
+    columns:
+      - name: Time_SK
+        tests:
+          - unique
+          - not_null
+      - name: Time_Category
+        tests:
+          - accepted_values:
+              values: ['Morning', 'Afternoon', 'Evening', 'Night', 'Unknown']
+
+  - name: dim_cancellation_reason
+    columns:
+      - name: CancelReason_SK
+        tests:
+          - unique
+          - not_null
+      - name: Reason_Code
+        tests:
+          - accepted_values:
+              values: ['A', 'B', 'C', 'D']
+
+  - name: fact_flights
+    columns:
+      - name: Flight_Business_Key
+        tests:
+          - unique
+          - not_null
+
+      - name: Date_SK
+        description: "Klucz obcy do wymiaru czasu."
+        tests:
+          - not_null
+
+      - name: Airline_SK
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_airline')
+                field: Airline_SK
+
+      - name: OriginAirport_SK
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_airport')
+                field: Airport_SK
+
+      - name: DestAirport_SK
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_airport')
+                field: Airport_SK
+
+      - name: Aircraft_SK
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_aircraft')
+                field: Aircraft_SK
+
+      - name: CancelReason_SK
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_cancellation_reason')
+                field: CancelReason_SK
+
+      - name: Is_Cancelled
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+
+      - name: Is_Diverted
+        tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+
