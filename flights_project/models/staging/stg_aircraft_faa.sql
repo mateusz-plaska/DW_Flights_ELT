@@ -7,9 +7,9 @@ WITH dedup_map AS (
 )
 
 SELECT
-    {{ clean_tail_number('faa.[N-NUMBER]') }} AS Tail_Number,
-    COALESCE(map.MFR_CLEAN, UPPER(LTRIM(RTRIM(faa.MFR)))) AS Manufacturer,
-    UPPER(LTRIM(RTRIM(faa.MODEL))) AS Model,
+    CAST({{ clean_tail_number('faa.[N-NUMBER]') }} AS VARCHAR(10)) AS Tail_Number,
+    CAST(COALESCE(map.MFR_CLEAN, UPPER(LTRIM(RTRIM(faa.MFR)))) AS VARCHAR(30)) AS Manufacturer,
+    CAST(UPPER(LTRIM(RTRIM(faa.MODEL))) AS VARCHAR(20)) AS Model,
     CAST(faa.[TYPE-ENG] AS INT) AS Engine_Type,
     NULLIF(CAST(faa.[NO-SEATS] AS INT), 0) AS Seat_Count,
     UPPER(LTRIM(RTRIM(faa.[AC-WEIGHT]))) AS Weight_Class

@@ -20,14 +20,14 @@ dedup_raw AS (
 )
 
 SELECT
-    UPPER(REPLACE(db.registration, '-', '')) AS Tail_Number,
+    CAST(UPPER(REPLACE(db.registration, '-', '')) AS VARCHAR(10)) AS Tail_Number,
 
-    COALESCE(
+    CAST(COALESCE(
         map.MFR_CLEAN,
         UPPER(LTRIM(RTRIM(COALESCE(db.manufacturername, db.manufacturericao))))
-    ) AS Manufacturer,
+    ) AS VARCHAR(30)) AS Manufacturer,
 
-    UPPER(LTRIM(RTRIM(db.model))) AS Model,
+    CAST(UPPER(LTRIM(RTRIM(db.model))) AS VARCHAR(20)) AS Model,
 
     CASE
         WHEN YEAR(TRY_CAST(NULLIF(LTRIM(RTRIM(db.built)), '0001-01-01') AS DATE)) < 1900 THEN NULL

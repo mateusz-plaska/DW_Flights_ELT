@@ -32,9 +32,9 @@ merged_data AS (
 business_logic AS (
     SELECT
         CAST(HASHBYTES('MD5', Tail_Number) AS UNIQUEIDENTIFIER) AS Aircraft_SK,
-        CAST(Tail_Number AS VARCHAR(10)) AS Tail_Number,
-        CAST(Manufacturer AS VARCHAR(30)) AS Manufacturer,
-        CAST(Model AS VARCHAR(20)) AS Model,
+        Tail_Number,
+        Manufacturer,
+        Model,
         Year_Built,
         Seat_Count,
         CASE

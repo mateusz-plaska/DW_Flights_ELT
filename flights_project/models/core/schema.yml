@@ -22,6 +22,18 @@ models:
           - unique
           - not_null
 
+  - name: dim_date
+    columns:
+      - name: Date_SK
+        tests:
+          - unique
+          - not_null
+      - name: Season
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Spring', 'Summer', 'Autumn', 'Winter']
+
   - name: dim_time
     columns:
       - name: Time_SK
@@ -31,7 +43,8 @@ models:
       - name: Time_Category
         tests:
           - accepted_values:
-              values: ['Morning', 'Afternoon', 'Evening', 'Night', 'Unknown']
+              arguments:
+                values: ['Morning', 'Afternoon', 'Evening', 'Night']
 
   - name: dim_cancellation_reason
     columns:
@@ -56,6 +69,19 @@ models:
         description: "Klucz obcy do wymiaru czasu."
         tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: Date_SK
+
+      - name: Time_SK
+        description: "Klucz obcy do wymiaru czasu."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_time')
+                field: Time_SK
 
       - name: Airline_SK
         tests:
