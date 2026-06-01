@@ -1,3 +1,5 @@
+{{ config(materialized='table', schema='stg') }}
+
 WITH dedup_map AS (
     SELECT MFR_RAW, MAX(MFR_CLEAN) AS MFR_CLEAN
     FROM {{ ref('mfr_mapping') }}

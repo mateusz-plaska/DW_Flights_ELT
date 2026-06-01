@@ -11,7 +11,7 @@ conn_str = f"mssql+pyodbc://@{SERVER}:{PORT}/{DATABASE}?driver={DRIVER.replace('
 engine = create_engine(conn_str, fast_executemany=True)
 
 
-def load_large_csv(file_path, table_name, columns_to_keep, schema='stg', chunksize=150000):
+def load_large_csv(file_path, table_name, columns_to_keep, schema='raw', chunksize=150000):
     print(f"Loading {file_path} into table {schema}.{table_name}...")
     start_time = time.time()
 

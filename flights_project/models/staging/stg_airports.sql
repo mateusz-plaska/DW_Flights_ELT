@@ -1,3 +1,5 @@
+{{ config(materialized='table', schema='stg') }}
+
 SELECT
     CAST(LTRIM(RTRIM(IATA_CODE)) AS VARCHAR(3)) AS IATA_Code,
     CAST(LTRIM(RTRIM(AIRPORT)) AS VARCHAR(80)) AS Airport_Name,

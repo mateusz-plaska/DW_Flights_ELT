@@ -45,18 +45,19 @@ SELECT
 
     f.Distance,
     f.Air_Time,
-    f.Taxi_Out,
-    f.Taxi_In,
-    f.Arrival_Delay,
-    f.Departure_Delay,
+    CASE WHEN f.Is_Cancelled = 1 THEN NULL ELSE f.Taxi_Out END AS Taxi_Out,
+    CASE WHEN f.Is_Cancelled = 1 THEN NULL ELSE f.Departure_Delay END AS Departure_Delay,
+    CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE f.Taxi_In END AS Taxi_In,
+    CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE f.Arrival_Delay END AS Arrival_Delay,
+
     CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE COALESCE(f.Weather_Delay, 0) END AS Weather_Delay,
     CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE COALESCE(f.Airline_Delay, 0) END AS Airline_Delay,
     CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE COALESCE(f.Late_Aircraft_Delay, 0) END AS Late_Aircraft_Delay,
     CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE COALESCE(f.Security_Delay, 0) END AS Security_Delay,
     CASE WHEN f.Is_Cancelled = 1 OR f.Is_Diverted = 1 THEN NULL ELSE COALESCE(f.Air_System_Delay, 0) END AS Air_System_Delay,
 
-    Is_Cancelled,
-    Is_Diverted
+    f.Is_Cancelled,
+    f.Is_Diverted
 FROM flights_to_load f
 LEFT JOIN airports orig ON f.Origin_Airport_Code = orig.Airport_Code
 LEFT JOIN airports dest ON f.Dest_Airport_Code = dest.Airport_Code

@@ -42,7 +42,8 @@ models:
       - name: Reason_Code
         tests:
           - accepted_values:
-              values: ['A', 'B', 'C', 'D']
+              arguments:
+                values: ['A', 'B', 'C', 'D']
 
   - name: fact_flights
     columns:

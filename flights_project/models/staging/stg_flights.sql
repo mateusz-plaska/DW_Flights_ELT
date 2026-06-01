@@ -1,3 +1,5 @@
+{{ config(materialized='table', schema='stg') }}
+
 SELECT
     CAST(YEAR AS INT) AS Year,
     CAST(MONTH AS INT) AS Month,

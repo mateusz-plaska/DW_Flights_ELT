@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: raw_data
     database: Flights_DW
-    schema: stg
+    schema: raw
     tables:
       - name: Raw_Flights
       - name: Raw_Airports
