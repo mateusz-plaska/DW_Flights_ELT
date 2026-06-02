@@ -1,12 +1,6 @@
 {{ config(materialized='table', schema='stg') }}
 
-WITH dedup_map AS (
-    SELECT MFR_RAW, MAX(MFR_CLEAN) AS MFR_CLEAN
-    FROM {{ ref('mfr_mapping') }}
-    GROUP BY MFR_RAW
-),
-
-dedup_raw AS (
+WITH dedup_raw AS (
     SELECT *,
            ROW_NUMBER() OVER(
                PARTITION BY UPPER(REPLACE(registration, '-', ''))
@@ -35,6 +29,6 @@ SELECT
     END AS Year_Built
 
 FROM dedup_raw AS db
-LEFT JOIN dedup_map AS map
-    ON COALESCE(db.manufacturername, db.manufacturericao) = map.MFR_RAW
+LEFT JOIN {{ ref('mfr_mapping') }} AS map
+    ON UPPER(LTRIM(RTRIM(COALESCE(db.manufacturername, db.manufacturericao)))) = map.MFR_RAW
 WHERE db.rn = 1
